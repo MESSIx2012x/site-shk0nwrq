@@ -1,0 +1,3450 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>موقعي</title>
+<style>/**************************************************************************
+ * KORA NET - Fixed layout (no left empty-space / no horizontal overflow)
+ * Integrated site styles + small additions (nav, pages, and fix for header)
+ **************************************************************************/
+:root {
+  --bg-0: #0a0a0a; /* أسود صافي */
+  --panel: linear-gradient(135deg, #141414, #0a0a0a);
+  --card-grad: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+
+  --glass: rgba(255, 0, 0, 0.05);   /* لمسة حمراء شفافة */
+  --glass-2: rgba(0, 255, 128, 0.07); /* لمسة خضراء شفافة */
+
+  --muted: #7a7a7a;  /* رمادي واضح */
+  --muted-2: #4d4d4d;
+  --text: #f2f2f2;   /* أبيض مائل للرمادي */
+
+  --neon-1: #ff1a1a; /* أحمر نيون 🔥 */
+  --neon-2: #00ffcc; /* سماوي نيون ⚡ */
+  --yellow: #39ff14; /* أخضر وحشي 🐍 */
+
+  --radius: 12px;
+
+  --shadow-lg: 0 18px 50px rgba(255, 26, 26, 0.3);
+  --shadow-sm: 0 6px 18px rgba(0, 255, 204, 0.2);
+
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+  --chat-bg: linear-gradient(180deg, #141414, #0a0a0a);
+}
+.light body {
+    background: var(--bg-0);
+    color: var(--text);
+}
+
+/* ===== Prevent horizontal scroll (fix left empty space) ===== */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: "Tajawal", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: var(--bg-0);
+    color: var(--text);
+    line-height: 1.35;
+    padding: 14px 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto
+}
+
+/* ===== Layout container (fixed so no overflow) ===== */
+.wrap {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 14px;
+    box-sizing: border-box;
+}
+
+/* ===== Global header/navigation for site (New & Improved) ===== */
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.site-header .left {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.site-nav {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.nav-link {
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--muted-2);
+    font-weight: 800;
+    cursor: pointer;
+    border: var(--glass-border);
+    outline: none;
+    transition: transform 0.2s ease-in-out, background 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.nav-link.active {
+    background: linear-gradient(90deg, #3b82f610, #60a5fa20);
+    color: var(--text)
+}
+
+/* Animate on click */
+.nav-link:active {
+    transform: scale(0.98);
+}
+
+.chat-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 10030;
+    background: linear-gradient(90deg, var(--neon-2), var(--neon-1));
+    color: #1a1a2e;
+    border: none;
+    padding: 12px 14px;
+    border-radius: 999px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(255, 154, 139, 0.08);
+    transition: transform 0.2s ease-in-out;
+    outline: none;
+}
+
+/* ===== Topbar (original) - Also now more responsive ===== */
+header.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.brand {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-shrink: 0
+}
+
+.brand .logo {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(90deg, var(--neon-2), var(--neon-1));
+    color: #1a1a2e;
+    font-weight: 900;
+    box-shadow: 0 6px 24px rgba(255, 107, 107, 0.06);
+    flex-shrink: 0;
+}
+
+.brand .name {
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: .3px;
+    background: linear-gradient(90deg, #ff6b6b, #c8c8e6 60%, #ff9a8b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.brand .tagline {
+    font-size: 12px;
+    color: var(--muted-2);
+    font-weight: 700
+}
+
+/* ===== Controls ===== */
+.controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--glass);
+    border-radius: 999px;
+    border: var(--glass-border);
+    min-width: 0;
+}
+
+.search svg {
+    flex-shrink: 0
+}
+
+.search input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-weight: 700;
+    width: 100%;
+    min-width: 80px;
+}
+
+.select, .btn {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: var(--glass-border);
+    background: linear-gradient(180deg, #2b2b4d, #1f1f3a);
+    color: var(--muted);
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.toggles {
+    display: flex;
+    gap: 8px;
+    align-items: center
+}
+
+.toggle-btn {
+    padding: 8px 10px;
+    border-radius: 999px;
+    border: var(--glass-border);
+    background: transparent;
+    cursor: pointer;
+    font-weight: 800;
+    color: var(--muted);
+    outline: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+.toggle-btn.active {
+    background: linear-gradient(90deg, #3b82f620, #60a5fa20);
+    color: #fff;
+    box-shadow: 0 8px 26px rgba(59, 130, 246, 0.06)
+}
+
+/* Animate on click */
+.btn:active, .toggle-btn:active, .action:active, .icon-btn:active {
+    transform: scale(0.98);
+}
+
+/* ===== Main layout: avoid reserved left space ===== */
+main {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.main-left {
+    flex: 1;
+    min-width: 0
+}
+
+.main-right {
+    width: 360px;
+    max-width: 360px;
+    min-width: 0;
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 12px;
+    border: var(--glass-border);
+    box-shadow: var(--shadow-sm);
+    height: fit-content;
+    flex-shrink: 0;
+}
+
+@media (max-width: 880px) {
+    .main-right {
+        display: none
+    }
+}
+
+/* ===== Grid - always 3 columns (as requested) ===== */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    align-items: start;
+    width: 100%;
+}
+
+@media (max-width: 420px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px
+    }
+}
+
+/* ===== Cards ===== */
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--card-grad);
+    border: none;
+    display: flex;
+    flex-direction: column;
+    transition: transform .22s ease, box-shadow .22s ease;
+    min-height: 280px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    min-width: 0;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg)
+}
+
+/* Animate on click */
+.card:active {
+    transform: scale(0.98);
+}
+
+.card .head {
+    position: relative;
+    height: 140px; /* تم التعديل هنا لجعله أقرب للصورة */
+    overflow: hidden;
+    background: #252540;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: contrast(1.04) saturate(1.04)
+}
+
+.thumb-empty {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--muted);
+    font-weight: 900;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.badge {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    background: linear-gradient(90deg, #ff9a8b, #a6a6cc);
+    color: #1a1a2e;
+    font-weight: 900;
+    padding: 6px 8px;
+    border-radius: 8px;
+    box-shadow: 0 8px 26px rgba(255, 154, 139, 0.06);
+    font-size: .82rem
+}
+
+.rating {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    background: linear-gradient(90deg, #ffd54a, #ffb86b);
+    color: #1a1a2e;
+    font-weight: 900;
+    padding: 6px 8px;
+    border-radius: 8px;
+    font-size: .82rem
+}
+
+.card-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 0
+}
+
+.name-ar {
+    font-weight: 900;
+    font-size: 1rem;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.name-en {
+    font-weight: 700;
+    font-size: .84rem;
+    color: var(--muted-2);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.meta {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 6px
+}
+
+.chip {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 800;
+    color: var(--muted-2);
+    border: var(--glass-border);
+    font-size: .78rem;
+    white-space: nowrap
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-top: 8px;
+    text-align: center
+}
+
+.snum {
+    color: var(--neon-1);
+    font-weight: 900;
+    font-size: 1rem
+}
+
+.slabel {
+    color: var(--muted-2);
+    font-weight: 700;
+    font-size: .72rem
+}
+
+.card-footer {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    margin-top: auto
+}
+
+.btn-small {
+    background: var(--neon-2);
+    border: none;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-weight: 900;
+    cursor: pointer;
+    color: #1a1a2e;
+    outline: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+.btn-small:active {
+    transform: scale(0.95);
+}
+
+.link {
+    background: transparent;
+    border: var(--glass-border);
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-weight: 800;
+    color: var(--muted-2);
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+.link:active {
+    transform: scale(0.95);
+}
+
+/* ===== Right details ===== */
+.right-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: var(--glass-border);
+    background: #252540;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block
+}
+
+.photo-empty {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--muted);
+    font-weight: 900;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.big-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 6px
+}
+
+.stat-card {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    border: var(--glass-border)
+}
+
+.stat-card .num {
+    font-weight: 900;
+    font-size: 1.15rem;
+    color: var(--neon-1)
+}
+
+.stat-card .lbl {
+    color: var(--muted-2);
+    font-weight: 800;
+    margin-top: 6px
+}
+
+.awards {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    padding: 8px;
+    border-radius: 8px;
+    border: var(--glass-border)
+}
+
+.bio {
+    background: var(--glass);
+    padding: 8px;
+    border-radius: 8px;
+    color: #dbe9ff
+}
+
+.action {
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: transparent;
+    border: var(--glass-border);
+    color: var(--muted-2);
+    font-weight: 900;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+.action:active {
+    transform: scale(0.95);
+}
+
+/* ===== Overlay for mobile ===== */
+.overlay {
+    position: fixed;
+    inset: 8px;
+    z-index: 9999;
+    display: none;
+    background: linear-gradient(180deg, #1f1f3a, #1a1a2e);
+    border-radius: 10px;
+    padding: 12px;
+    overflow: auto;
+    border: var(--glass-border)
+}
+
+.overlay.show {
+    display: flex;
+    flex-direction: column
+}
+
+.overlay .close {
+    align-self: flex-end;
+    background: transparent;
+    border: none;
+    color: var(--muted-2);
+    font-weight: 900;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+.overlay .close:active {
+    transform: scale(0.95);
+}
+
+/* ===== Stars ===== */
+.stars {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    font-weight: 900
+}
+
+.star {
+    color: var(--yellow);
+    filter: drop-shadow(0 3px 8px rgba(255, 213, 74, 0.09))
+}
+
+/* ===== Footer ===== */
+footer {
+    margin-top: 22px;
+    text-align: center;
+    color: var(--muted-2);
+    font-weight: 700
+}
+
+/* small helpers */
+.tiny {
+    font-size: .85rem
+}
+
+.muted {
+    color: var(--muted-2)
+}
+
+/***************** SITE-WIDE NAV & PAGES *****************/
+.site-pages .page {
+    display: none;
+}
+
+.site-pages .page.active {
+    display: block;
+}
+
+.site-hero {
+    background: linear-gradient(90deg, #1f1f3a, #2b2b4d);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+    border: var(--glass-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.grid-compact {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+/* ===== ChatPlus (local AI Chat panel) ===== */
+.chat-modal {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 10031;
+    width: 360px;
+    max-width: calc(100% - 40px);
+    height: 520px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--chat-bg);
+    border: var(--glass-border);
+    box-shadow: 0 30px 80px rgba(12, 12, 28, 0.7);
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-modal.hidden {
+    display: none;
+}
+
+.chat-header {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02)
+}
+
+.chat-body {
+    padding: 12px;
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-input-row {
+    display: flex;
+    gap: 8px;
+    padding: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.chat-input-row input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text);
+    font-weight: 700
+}
+
+.chat-message {
+    max-width: 85%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    line-height: 1.25
+}
+
+.chat-message.user {
+    align-self: flex-end;
+    background: linear-gradient(90deg, #ff6b6b, #a6a6cc);
+    color: #1a1a2e
+}
+
+.chat-message.ai {
+    align-self: flex-start;
+    background: linear-gradient(90deg, #2b2b4d, #1f1f3a);
+    color: var(--muted-2);
+    border: var(--glass-border)
+}
+
+.chat-empty {
+    color: var(--muted-2);
+    text-align: center;
+    padding: 18px 0
+}
+
+.icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted-2);
+    font-weight: 900;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+.icon-btn:active {
+    transform: scale(0.95);
+}
+
+@media (max-width: 480px) {
+    .chat-modal {
+        left: 8px;
+        right: 8px;
+        width: auto;
+        height: 60vh
+    }
+
+    .main-right {
+        display: none
+    }
+}
+
+/* KORA NET Styles */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.site-name {
+    position: relative;
+    font-size: 1.5em; /* تم تصغيره */
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin: 0;
+    background: linear-gradient(45deg, #ff9a8b, #ff6b6b, #ffd54a, #ffb86b, #ff6b6b);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    text-shadow: 0 0 40px rgba(255, 107, 107, 0.6);
+    animation: gradientShift 4s ease-in-out infinite;
+    z-index: 1;
+}
+
+.site-name::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, .55) 15%, transparent 30%);
+    left: -100%;
+    mix-blend-mode: screen;
+    animation: shimmer 2.8s ease-in-out infinite;
+    pointer-events: none;
+}
+/* شيل اللون الأزرق الافتراضي من الكروت والأزرار */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+.card {
+  outline: none !important;
+  -webkit-focus-ring-color: transparent;
+}
+@keyframes blueGlow {
+    0% {
+        text-shadow: 0 0 5px #3b82f6, 0 0 10px #60a5fa;
+    }
+    50% {
+        text-shadow: 0 0 20px #3b82f6, 0 0 30px #60a5fa;
+    }
+    100% {
+        text-shadow: 0 0 5px #3b82f6, 0 0 10px #60a5fa;
+    }
+}
+
+.fancy-blue {
+    animation: blueGlow 2s ease-in-out infinite;
+}
+/* ✨ سلاسة عامة للموقع كله */
+* {
+  transition: all 0.3s ease-in-out;   /* يخلي أي تغيير يبقى ناعم */
+  scroll-behavior: smooth;            /* يخلي التمرير Smooth */
+}
+
+/* ✨ شكل حلو للـ hover على الروابط والأزرار */
+a, button, .btn {
+  transition: all 0.3s ease-in-out;
+}
+a:hover, button:hover, .btn:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+/* ✨ كروت أو عناصر عامة */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* ✨ صور */
+img {
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+img:hover {
+  transform: scale(1.08);
+  filter: brightness(1.15);
+}
+
+/* ✨ إدخالات (input) */
+input, textarea, select {
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: #0ff;
+  box-shadow: 0 0 8px #0ff;
+  outline: none;
+}
+
+#btn-players,
+#btn-compare {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  background: #1f2937;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 0 5px; /* يخلي بينهم مسافة صغيرة */
+}
+
+#btn-players:hover,
+#btn-compare:hover {
+  background: #374151;
+}
+
+/* ✅ اللاعب المختار للمقارنة */
+.player-card.selected {
+  border: 2px solid #ff0066;
+  box-shadow: 0 0 12px rgba(255, 0, 102, 0.6);
+}
+
+/* ===== Messages Styles ===== */
+.chat-full-modal .chat-bubble {
+    padding: 1rem 1.5rem;
+    border-radius: 20px;
+    max-width: 80%;
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.chat-full-modal .user-bubble {
+    background-color: #1e1e1e;
+    align-self: flex-start;
+}
+
+.chat-full-modal .bot-bubble {
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    color: white;
+    align-self: flex-end;
+}
+
+@media (max-width: 480px) {
+    .main-right {
+        display: none
+    }
+}
+
+/*
+ * ============================================
+ * Styles for the Fullscreen AI Page
+ * ============================================
+ */
+.ai-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-0); /* استخدام اللون الأساسي للموقع */
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    padding: 20px;
+}
+
+.ai-page.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.ai-header {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.ai-content {
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+}</style>
+</head>
+<body>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kora Net</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .transfer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding-block: 20px;
+        }
+
+        .transfer-card {
+            background: var(--panel);
+            border: var(--glass-border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .transfer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .transfer-info h3 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin: 0 0 10px;
+            color: var(--neon-2);
+        }
+
+        .transfer-info p {
+            margin: 8px 0;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .transfer-info p strong {
+            color: var(--muted-2);
+            font-weight: 600;
+            min-width: 90px;
+            display: inline-block;
+        }
+
+        .transfer-info p span {
+            color: var(--neon-2);
+            font-weight: 700;
+            margin-right: 8px;
+        }
+        
+        /* Velora AI Chat Styles */
+        :root {
+          --bg-color: #0b0b0b;
+          --primary-bg: #121212;
+          --secondary-bg: #1e1e1e;
+          --accent-color: #3b82f6;
+          --text-color: #f0f0f0;
+          --blue-gradient: linear-gradient(135deg, #3b82f6, #06b6d4);
+          --shadow-primary: 0 4px 15px rgba(0, 0, 0, 0.3);
+          --shadow-secondary: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .chat-bubble {
+          padding: 1rem 1.5rem;
+          border-radius: 20px;
+          max-width: 80%;
+          line-height: 1.7;
+          margin-bottom: 0.75rem;
+          box-shadow: var(--shadow-primary);
+        }
+        .user-bubble {
+          background-color: var(--secondary-bg);
+          align-self: flex-start;
+        }
+        .bot-bubble {
+          background: var(--blue-gradient);
+          color: white;
+          align-self: flex-end;
+        }
+
+        .input-textarea {
+          resize: none;
+          border: none;
+          background: transparent;
+          outline: none;
+          color: var(--text-color);
+        }
+
+        /* ---------------- FIXES FOR CHAT MODAL ---------------- */
+        /* Make the chat modal a fixed, full-screen overlay with a high z-index */
+        .chat-modal {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+            z-index: 1000; /* Set a high z-index to ensure it's on top of other content */
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-color); /* Match the site's background color */
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transform: translateY(100%);
+            opacity: 0;
+            border-radius: 0; /* Override any border-radius for full screen */
+        }
+        
+        /* Make the chat visible when the "show" class is added (can be used as an alternative to `hidden`) */
+        .chat-modal.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* The `hidden` class needs to be defined explicitly if not from Tailwind CSS */
+        .hidden {
+            display: none;
+        }
+
+        /* Ensure the main content area of the chat can scroll independently */
+        #chat-content-container {
+            overflow-y: auto;
+            flex-grow: 1; /* Allow this container to fill available space */
+            -webkit-overflow-scrolling: touch; /* Better scrolling on iOS */
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrap">
+    <header class="site-header">
+        <div class="left">
+            <a href="/" class="brand">
+                <div class="logo">🌹</div>
+                <div>
+                    <div class="name">كـورا نــت</div>
+                    <div class="tagline">شبكة اللاعبين والأخبار</div>
+                </div>
+            </a>
+            <nav class="site-nav">
+                <a href="#playersPage" class="nav-link active" data-target="playersPage">اللاعبون</a>
+                <a href="#newsPage" class="nav-link" data-target="newsPage">الأخبار</a>
+                <a href="#teamsPage" class="nav-link" data-target="teamsPage">الفرق</a>
+                <a href="#contactPage" class="nav-link" data-target="contactPage">اتصل بنا</a>
+                <a href="#" id="chat-toggle-btn" class="nav-link ai-link">AI</a>
+            </nav>
+        </div>
+        <div class="toggles">
+            <button class="toggle-btn" id="proBtn" aria-label="Toggle PRO mode">PRO</button>
+            <button class="toggle-btn" id="themeBtn" aria-label="Toggle theme">💡</button>
+        </div>
+    </header>
+
+    <div class="site-pages">
+        <section id="playersPage" class="page active">
+            <div class="site-hero">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+                    <h1 style="margin:0;font-size:1.8rem;font-weight:900" class="gradient-text">اللاعبون <span
+                                style="font-size:1.2rem" class="muted">(<span id="count"></span> لاعب)</span></h1>
+                    <div class="controls">
+                        <div class="search">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.3-4.3"></path>
+                            </svg>
+                            <input type="text" id="search" placeholder="ابحث عن لاعب...">
+                        </div>
+                        <select class="select" id="posFilter">
+                            <option value="all">جميع المراكز</option>
+                            <option value="forward">مهاجم</option>
+                            <option value="wing">جناح</option>
+                            <option value="mid">وسط</option>
+                            <option value="def">مدافع</option>
+                            <option value="gk">حارس</option>
+                        </select>
+                        <select class="select" id="countryFilter">
+                            <option value="all">جميع الدول</option>
+                            <option value="🇪🇬 مصر">مصر</option>
+                            <option value="🇦🇷 الأرجنتين">الأرجنتين</option>
+                            <option value="🇵🇹 البرتغال">البرتغال</option>
+                            <option value="🇫🇷 فرنسا">فرنسا</option>
+                            <option value="🇧🇪 بلجيكا">بلجيكا</option>
+                            <option value="🇭🇷 كرواتيا">كرواتيا</option>
+                            <option value="🇸🇳 السنغال">السنغال</option>
+                            <option value="🇩🇪 ألمانيا">ألمانيا</option>
+                        </select>
+                        <button class="btn" id="compareBtn">مقارنة</button>
+                    </div>
+                </div>
+            </div>
+
+            <main>
+                <div class="main-left">
+                    <div class="grid" id="grid"></div>
+                </div>
+                <div class="main-right" id="rightPane">
+                    <div style="text-align:center;color:var(--muted-2);font-weight:700">اضغط على أي لاعب لعرض التفاصيل
+                        هنا
+                    </div>
+                </div>
+            </main>
+        </section>
+
+        <section id="newsPage" class="page">
+            <div class="site-hero">
+                <h1 style="margin:0" class="gradient-text">🌟 سوق الانتقالات 🌟</h1>
+            </div>
+            <div class="grid-compact">
+                <div class="transfer-grid">
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">ألكسندر إيزاك</h3>
+                            <p><strong>النادي الجديد:</strong> <span>ليفربول</span></p>
+                            <p><strong>قادم من:</strong> نيوكاسل يونايتد</p>
+                            <p><strong>قيمة الصفقة:</strong> 150 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">فلوريان فيرتس</h3>
+                            <p><strong>النادي الجديد:</strong> <span>ليفربول</span></p>
+                            <p><strong>قادم من:</strong> باير ليفركوزن</p>
+                            <p><strong>قيمة الصفقة:</strong> 116 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">هوغو إيكيتيكي</h3>
+                            <p><strong>النادي الجديد:</strong> <span>ليفربول</span></p>
+                            <p><strong>قادم من:</strong> باريس سان جيرمان</p>
+                            <p><strong>قيمة الصفقة:</strong> 79 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">ترينت ألكسندر-أرنولد</h3>
+                            <p><strong>النادي الجديد:</strong> <span>ريال مدريد</span></p>
+                            <p><strong>قادم من:</strong> ليفربول</p>
+                            <p><strong>قيمة الصفقة:</strong> 8.5 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">بنيامين سيسكو</h3>
+                            <p><strong>النادي الجديد:</strong> <span>مانشستر يونايتد</span></p>
+                            <p><strong>قادم من:</strong> لايبزيغ</p>
+                            <p><strong>قيمة الصفقة:</strong> 73.4 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">برايان مبيومو</h3>
+                            <p><strong>النادي الجديد:</strong> <span>مانشستر يونايتد</span></p>
+                            <p><strong>قادم من:</strong> برينتفورد</p>
+                            <p><strong>قيمة الصفقة:</strong> 71 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">فيكتور أوسيمين</h3>
+                            <p><strong>النادي الجديد:</strong> <span>غلطة سراي</span></p>
+                            <p><strong>قادم من:</strong> نابولي</p>
+                            <p><strong>قيمة الصفقة:</strong> 64.8 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">نيك وولتمايد</h3>
+                            <p><strong>النادي الجديد:</strong> <span>نيوكاسل يونايتد</span></p>
+                            <p><strong>قادم من:</strong> شتوتغارت</p>
+                            <p><strong>قيمة الصفقة:</strong> 69 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">لويس دياز</h3>
+                            <p><strong>النادي الجديد:</strong> <span>بايرن ميونخ</span></p>
+                            <p><strong>قادم من:</strong> ليفربول</p>
+                            <p><strong>قيمة الصفقة:</strong> 64.8 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">ماتياس كونيا</h3>
+                            <p><strong>النادي الجديد:</strong> <span>مانشستر يونايتد</span></p>
+                            <p><strong>قيمة الصفقة:</strong> 74.5 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">جواو بيدرو</h3>
+                            <p><strong>النادي الجديد:</strong> <span>تشيلسي</span></p>
+                            <p><strong>قادم من:</strong> واتفورد</p>
+                            <p><strong>قيمة الصفقة:</strong> 70 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">دين هويسن</h3>
+                            <p><strong>النادي الجديد:</strong> <span>ريال مدريد</span></p>
+                            <p><strong>قادم من:</strong> أياكس</p>
+                            <p><strong>قيمة الصفقة:</strong> 78 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">تيغان رايندرز</h3>
+                            <p><strong>النادي الجديد:</strong> <span>مانشستر سيتي</span></p>
+                            <p><strong>قادم من:</strong> أياكس</p>
+                            <p><strong>قيمة الصفقة:</strong> 69 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">إلياس بن سغير</h3>
+                            <p><strong>النادي الجديد:</strong> <span>باير ليفركوزن</span></p>
+                            <p><strong>قادم من:</strong> موناكو</p>
+                            <p><strong>قيمة الصفقة:</strong> 30 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">إيكوي فيرنانديز</h3>
+                            <p><strong>النادي الجديد:</strong> <span>باير ليفركوزن</span></p>
+                            <p><strong>قادم من:</strong> القادسية</p>
+                            <p><strong>قيمة الصفقة:</strong> 30 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">مارك جوهي</h3>
+                            <p><strong>النادي الجديد:</strong> <span>ليفربول</span></p>
+                            <p><strong>قيمة الصفقة:</strong> 35 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">جيدون سانشو</h3>
+                            <p><strong>النادي الجديد:</strong> <span>أستون فيلا</span></p>
+                            <p><strong>قيمة الصفقة:</strong> إعارة</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">فيكتور ليندلوف</h3>
+                            <p><strong>النادي الجديد:</strong> <span>أستون فيلا</span></p>
+                            <p><strong>قيمة الصفقة:</strong> انتقال حر</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">راندي كولو مواني</h3>
+                            <p><strong>النادي الجديد:</strong> <span>توتنهام هوتسبير</span></p>
+                            <p><strong>قيمة الصفقة:</strong> إعارة</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">مارك غيوي</h3>
+                            <p><strong>النادي الجديد:</strong> <span>ليفربول</span></p>
+                            <p><strong>قيمة الصفقة:</strong> غير معلنة</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">جيانلويجي دوناروما</h3>
+                            <p><strong>النادي الجديد:</strong> <span>مانشستر سيتي</span></p>
+                            <p><strong>قيمة الصفقة:</strong> إعارة</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">إيلكاي غوندوغان</h3>
+                            <p><strong>النادي الجديد:</strong> <span>غلطة سراي</span></p>
+                            <p><strong>قيمة الصفقة:</strong> انتقال حر</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">هارفي إليوت</h3>
+                            <p><strong>النادي الجديد:</strong> <span>أستون فيلا</span></p>
+                            <p><strong>قيمة الصفقة:</strong> 35 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">جواو بالينيا</h3>
+                            <p><strong>النادي الجديد:</strong> <span>توتنهام هوتسبير</span></p>
+                            <p><strong>قيمة الصفقة:</strong> 5 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">أرون رامسديل</h3>
+                            <p><strong>النادي الجديد:</strong> <span>نيوكاسل يونايتد</span></p>
+                            <p><strong>قيمة الصفقة:</strong> 4.6 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">نيكولاس جاكسون</h3>
+                            <p><strong>النادي الجديد:</strong> <span>بايرن ميونخ</span></p>
+                            <p><strong>قيمة الصفقة:</strong> 16.5 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">فانيا ميلينكوفيتش سافيتش</h3>
+                            <p><strong>النادي الجديد:</strong> <span>نابولي</span></p>
+                            <p><strong>قيمة الصفقة:</strong> 15 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">لورينزو لوكا</h3>
+                            <p><strong>النادي الجديد:</strong> <span>نابولي</span></p>
+                            <p><strong>قيمة الصفقة:</strong> 9 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">جورجي سوداكوف</h3>
+                            <p><strong>النادي الجديد:</strong> <span>بنفيكا</span></p>
+                            <p><strong>قيمة الصفقة:</strong> 6.75 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">راسموس هويلوند</h3>
+                            <p><strong>النادي الجديد:</strong> <span>نابولي</span></p>
+                            <p><strong>قيمة الصفقة:</strong> 6 مليون يورو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3 class="player-name">أوليفر توريه</h3>
+                            <p><strong>النادي الجديد:</strong> <span>نابولي</span></p>
+                            <p><strong>قيمة الصفقة:</strong> 9 مليون يورو</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="teamsPage" class="page">
+            <div class="site-hero">
+                <h1 style="margin:0" class="gradient-text">الفرق</h1>
+            </div>
+            <div class="grid-compact">
+                <div class="transfer-grid">
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3>ريال مدريد</h3>
+                            <p><strong>تأسس:</strong> <span>1902</span></p>
+                            <p><strong>أبرز البطولات:</strong> 14 دوري أبطال أوروبا، 35 الدوري الإسباني</p>
+                            <p><strong>نجوم تاريخيون:</strong> كريستيانو رونالدو، زين الدين زيدان</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3>برشلونة</h3>
+                            <p><strong>تأسس:</strong> <span>1899</span></p>
+                            <p><strong>أبرز البطولات:</strong> 5 دوري أبطال أوروبا، 26 الدوري الإسباني</p>
+                            <p><strong>نجوم تاريخيون:</strong> ليونيل ميسي، تشافي، إنييستا</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3>أتلتيكو مدريد</h3>
+                            <p><strong>تأسس:</strong> <span>1903</span></p>
+                            <p><strong>أبرز البطولات:</strong> 3 الدوري الأوروبي، 11 الدوري الإسباني</p>
+                            <p><strong>نجوم تاريخيون:</strong> فيرناندو توريس، دييجو سيميوني</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3>مانشستر يونايتد</h3>
+                            <p><strong>تأسس:</strong> <span>1878</span></p>
+                            <p><strong>أبرز البطولات:</strong> 3 دوري أبطال أوروبا، 20 الدوري الإنجليزي</p>
+                            <p><strong>نجوم تاريخيون:</strong> إريك كانتونا، كريستيانو رونالدو</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3>ليفربول</h3>
+                            <p><strong>تأسس:</strong> <span>1892</span></p>
+                            <p><strong>أبرز البطولات:</strong> 6 دوري أبطال أوروبا، 19 الدوري الإنجليزي</p>
+                            <p><strong>نجوم تاريخيون:</strong> ستيفن جيرارد، محمد صلاح</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3>مانشستر سيتي</h3>
+                            <p><strong>تأسس:</strong> <span>1880</span></p>
+                            <p><strong>أبرز البطولات:</strong> 1 دوري أبطال أوروبا، 9 الدوري الإنجليزي</p>
+                            <p><strong>نجوم حاليون:</strong> كيفين دي بروين، إيرلينغ هالاند</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3>تشيلسي</h3>
+                            <p><strong>تأسس:</strong> <span>1905</span></p>
+                            <p><strong>أبرز البطولات:</strong> 2 دوري أبطال أوروبا، 6 الدوري الإنجليزي</p>
+                            <p><strong>نجوم تاريخيون:</strong> فرانك لامبارد، إدين هازارد</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3>باريس سان جيرمان</h3>
+                            <p><strong>تأسس:</strong> <span>1970</span></p>
+                            <p><strong>أبرز البطولات:</strong> 1 دوري أبطال أوروبا، 11 الدوري الفرنسي</p>
+                            <p><strong>نجوم تاريخيون:</strong> نيمار، كيليان مبابي</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3>بايرن ميونيخ</h3>
+                            <p><strong>تأسس:</strong> <span>1900</span></p>
+                            <p><strong>أبرز البطولات:</strong> 6 دوري أبطال أوروبا، 33 الدوري الألماني</p>
+                            <p><strong>نجوم تاريخيون:</strong> فرانز بيكنباور، توماس مولر</p>
+                        </div>
+                    </div>
+                    <div class="transfer-card">
+                        <div class="transfer-info">
+                            <h3>يوفنتوس</h3>
+                            <p><strong>تأسس:</strong> <span>1897</span></p>
+                            <p><strong>أبرز البطولات:</strong> 2 دوري أبطال أوروبا، 36 الدوري الإيطالي</p>
+                            <p><strong>نجوم تاريخيون:</strong> أليساندرو ديل بييرو، كريستيانو رونالدو</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contactPage" class="page">
+            <div class="site-hero">
+                <h1 style="margin:0" class="gradient-text">اتصل بنا</h1>
+            </div>
+            <div style="background:var(--panel);border-radius:12px;border:var(--glass-border);padding:18px;text-align:center;color:var(--muted-2);font-weight:700">
+                <p>للتواصل، يرجى مراسلتنا على: <a href="mailto:contactwebsite.koranet@gmail.com" style="color:var(--neon-2)">website.koranet@gmail.com</a>
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <div id="chat-modal" class="chat-modal hidden">
+        <div class="chat-header">
+            <div style="display:flex;align-items:center;gap:8px">
+                <div class="logo"></div>
+                <div class="name" style="font-size:1rem">Velora AI</div>
+            </div>
+            <button class="icon-btn" id="chat-close-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <main class="flex-1 flex flex-col relative">
+            <div id="chat-content-container" class="flex-1 overflow-auto p-6 scrollbar-thin bg-gradient-to-t from-black via-gray-900 to-transparent">
+                <div id="log" class="space-y-4 max-w-3xl mx-auto flex flex-col"></div>
+                <div id="welcome-message" class="flex flex-col items-center justify-center text-center mt-20 space-y-6">
+                    <h2 class="text-2xl font-bold text-white">بماذا يمكنني مساعدتك؟</h2>
+                    <div class="grid grid-cols-2 gap-3 mt-4">
+                        <button onclick="quickSend('إنشاء صورة')" class="px-4 py-2 rounded-full border border-gray-600 text-green-400 hover:bg-green-600/20 transition">
+                            🖼️ إنشاء صورة
+                        </button>
+<button onclick="quickSend('وضع خطة')" 
+        class="px-4 py-2 rounded-full border border-gray-600 text-yellow-400 hover:bg-yellow-600/20 transition">
+    📝 تكتيك
+</button>
+                        <button onclick="quickSend('تلخيص نص')" class="px-4 py-2 rounded-full border border-gray-600 text-orange-400 hover:bg-orange-600/20 transition">
+                            📄 تلخيص نص
+                        </button>
+                        <button onclick="quickSend('كتابة كود')" class="px-4 py-2 rounded-full border border-gray-600 text-blue-400 hover:bg-blue-600/20 transition">
+                            💻 كتابة كود
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-primary-bg p-4 flex items-end gap-3 sticky bottom-0">
+                <div class="flex items-center gap-3 w-full">
+                    <textarea id="q" placeholder="اكتب سؤالك..." rows="1" class="flex-1 input-textarea p-3 rounded-full border border-gray-700 bg-black"></textarea>
+                    <button id="send-btn" disabled class="bg-accent-color p-4 rounded-full text-white shadow-lg hover:opacity-80 transition">
+                        <i data-feather="send" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <div class="overlay" id="overlay" aria-hidden="true">
+        <button class="close" id="overlayClose">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <div id="overlayContent"></div>
+    </div>
+
+    <footer>
+        <p>&copy; 
+        2025 Kora Net. جميع الحقوق محفوظة.
+        يتم تطوير خاصية الAi💫 و خاصية المقارنة💫 </p>
+    </footer>
+
+</div>
+
+<script>
+/*************************************************************************
+ * INTEGRATED JS
+ * - Site navigation (pages)
+ * - Integrated original PLAYERS array + rendering logic (preserved)
+ * - ChatPlus: local AI chat that replies to any message
+ * - Player Comparison Module
+ *************************************************************************/
+
+/* ---------------- SITE NAVIGATION ---------------- */
+document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-target]');
+    if (t && t.dataset.target) {
+        const target = t.dataset.target;
+        // update active class
+        document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+        document.querySelector(`.nav-link[data-target="${target}"]`)?.classList.add('active');
+        // show page
+        document.querySelectorAll('.site-pages .page').forEach(p => p.classList.remove('active'));
+        const page = document.getElementById(target);
+        if (page) page.classList.add('active');
+        if (target === 'playersPage') {
+            renderGrid(); // keep any opened player in right pane if exist in URL
+            const params = new URLSearchParams(window.location.search);
+            const pid = params.get('player');
+            if (pid) openDetail(pid, {
+                pushState: false
+            });
+        }
+    }
+});
+
+/* ---------------- PLAYERS DATA (from original, but cleaned) ---------------- */
+const PLAYERS = [
+  {
+    id: "suarez",
+    name_ar: "لويس سواريز",
+    name_en: "Luis Suárez",
+    country: "🇺🇾 أوروغواي",
+    club: "أتلتيكو مدريد",
+    pos: "forward",
+    img: "https://upload.wikimedia.org/wikipedia/commons/0/0a/Luis_Suarez_FCB_2014.jpg",
+    basic: { goals: 517, assists: 214 },
+    matches: 800,
+    trophies: 21,
+    rating: 9.0,
+    advanced: { xG: 0.58, keyPasses: 1.8, dribblesPG: 1.7, passAcc: "81%", shotAcc: "57%" },
+    awards: ["الحذاء الذهبي الأوروبي 2014-15", "أفضل لاعب في أوروغواي 2010,2011"],
+    history: [
+      { team: "Nacional", from: 2005, to: 2006 },
+      { team: "Groningen", from: 2006, to: 2007 },
+      { team: "Ajax", from: 2007, to: 2011 },
+      { team: "Liverpool", from: 2011, to: 2014 },
+      { team: "Barcelona", from: 2014, to: 2020 },
+      { team: "Atlético Madrid", from: 2020, to: 2025 }
+    ],
+    bio: "أحد أخطر المهاجمين في جيله، يمتاز بالمهارة العالية والإنهاء الحاسم أمام المرمى."
+  },
+  {
+    id: "barella",
+    name_ar: "نيكولو باريلا",
+    name_en: "Nicolò Barella",
+    country: "🇮🇹 إيطاليا",
+    club: "إنتر ميلان",
+    pos: "mid",
+    img: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Nicol%C3%B2_Barella_in_2021.jpg",
+    basic: { goals: 52, assists: 66 },
+    matches: 290,
+    trophies: 9,
+    rating: 8.7,
+    advanced: { keyPasses: 2.3, dribblesPG: 1.6, passAcc: "85%" },
+    awards: ["أفضل لاعب شاب في إيطاليا 2018"],
+    history: [
+      { team: "Cagliari", from: 2014, to: 2019 },
+      { team: "Inter Milan", from: 2019, to: 2025 }
+    ],
+    bio: "لاعب وسط إيطالي مميز، يمتاز بالقدرة على الضغط وصناعة اللعب."
+  },
+  {
+    id: "ronaldinho",
+    name_ar: "رونالدينيو",
+    name_en: "Ronaldinho",
+    country: "🇧🇷 البرازيل",
+    club: "برشلونة",
+    pos: "mid",
+    img: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Ronaldinho_in_2019.jpg",
+    basic: { goals: 205, assists: 150 },
+    matches: 511,
+    trophies: 15,
+    rating: 9.0,
+    advanced: { keyPasses: 3.0, dribblesPG: 3.5, passAcc: "85%" },
+    awards: ["أفضل لاعب في العالم 2005", "الكرة الذهبية 2005"],
+    history: [
+      { team: "Grêmio", from: 1998, to: 2001 },
+      { team: "Paris Saint-Germain", from: 2001, to: 2003 },
+      { team: "Barcelona", from: 2003, to: 2008 },
+      { team: "AC Milan", from: 2008, to: 2011 },
+      { team: "Flamengo", from: 2011, to: 2012 },
+      { team: "Atlético Mineiro", from: 2012, to: 2014 },
+      { team: "Querétaro", from: 2014, to: 2015 },
+      { team: "Fluminense", from: 2015, to: 2015 }
+    ],
+    bio: "أحد أعظم لاعبي كرة القدم في التاريخ، معروف بمهاراته الاستثنائية وأسلوبه المميز في اللعب."
+  },
+  {
+    id: "debruyne",
+    name_ar: "كيفن دي بروين",
+    name_en: "Kevin De Bruyne",
+    country: "🇧🇪 بلجيكا",
+    club: "مانشستر سيتي",
+    pos: "mid",
+    img: "https://upload.wikimedia.org/wikipedia/commons/4/40/Kevin_De_Bruyne_201807091.jpg",
+    basic: { goals: 100, assists: 200 },
+    matches: 400,
+    trophies: 10,
+    rating: 8.8,
+    advanced: { keyPasses: 3.5, dribblesPG: 1.2, passAcc: "88%" },
+    awards: ["أفضل لاعب في الدوري الإنجليزي 2020"],
+    history: [
+      { team: "Chelsea", from: 2012, to: 2014 },
+      { team: "Wolfsburg", from: 2014, to: 2015 },
+      { team: "Manchester City", from: 2015, to: 2025 }
+    ],
+    bio: "صانع ألعاب بلجيكي، يعتبر من أفضل الممررين في العالم."
+  },
+  {
+    id: "salah",
+    name_ar: "محمد صلاح",
+    name_en: "Mohamed Salah",
+    country: "🇪🇬 مصر",
+    club: "ليفربول",
+    pos: "wing",
+    img: "https://upload.wikimedia.org/wikipedia/commons/4/4a/Mohamed_Salah_2018.jpg",
+    basic: { goals: 243, assists: 113 },
+    matches: 397,
+    trophies: 7,
+    rating: 9.2,
+    advanced: { xG: 0.55, keyPasses: 2.3, dribblesPG: 3.4, passAcc: "82%", shotAcc: "58%" },
+    awards: [
+      "أفضل لاعب في أفريقيا (2017، 2018)",
+      "الحذاء الذهبي للدوري الإنجليزي (3 مرات)",
+      "أفضل لاعب في الدوري الإنجليزي (PFA) مرتين",
+      "جائزة صانع الألعاب في الدوري الإنجليزي (2022)"
+    ],
+    history: [
+      { team: "المقاولون العرب", from: 2010, to: 2012 },
+      { team: "بازل", from: 2012, to: 2014 },
+      { team: "تشيلسي", from: 2014, to: 2016 },
+      { team: "فيورنتينا", from: 2015, to: 2015 },
+      { team: "روما", from: 2016, to: 2017 },
+      { team: "ليفربول", from: 2017, to: 2025 }
+    ],
+    bio: "أيقونة الكرة المصرية والإفريقية، يتميز بسرعته ومهاراته في التسجيل وصناعة الأهداف."
+  },
+  {
+    id: "messi",
+    name_ar: "ليونيل ميسي",
+    name_en: "Lionel Messi",
+    country: "🇦🇷 الأرجنتين",
+    club: "ميامي إنتر",
+    pos: "forward",
+    img: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Lionel_Messi_20180626.jpg", // محسّن بروابط Wikimedia Commons
+    basic: { goals: 877, assists: 391 },
+    matches: 1118,
+    trophies: 45,
+    rating: 9.8,
+    advanced: { xG: 0.72, keyPasses: 3.4, dribblesPG: 2.8, passAcc: "89%", shotAcc: "60%" },
+    awards: [
+      "الكرة الذهبية (8 مرات)",
+      "الحذاء الذهبي الأوروبي (6 مرات)",
+      "هداف برشلونة التاريخي (672 هدف)",
+      "أكثر من سجل في عام واحد (91 هدف 2012)",
+      "هداف الأرجنتين التاريخي (112 هدف)"
+    ],
+    history: [
+      { team: "Barcelona", from: 2004, to: 2021 },
+      { team: "Paris Saint-Germain", from: 2021, to: 2023 },
+      { team: "Inter Miami", from: 2023, to: 2025 }
+    ],
+    bio: "أسطورة كرة القدم، يملك أرقاماً قياسية مذهلة ومبدع في التسجيل وصناعة اللعب."
+  },
+  {
+    id: "ronaldo",
+    name_ar: "كريستيانو رونالدو",
+    name_en: "Cristiano Ronaldo",
+    country: "🇵🇹 البرتغال",
+    club: "النصر",
+    pos: "forward",
+    img: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg", // من Wikimedia Commons
+    basic: { goals: 938, assists: 231 },
+    matches: 1270,
+    trophies: 34,
+    rating: 9.5,
+    advanced: { xG: 0.75, keyPasses: 1.9, dribblesPG: 2.2, passAcc: "83%", shotAcc: "61%" },
+    awards: [
+      "الكرة الذهبية (5 مرات)",
+      "الحذاء الذهبي الأوروبي (4 مرات)",
+      "أفضل لاعب في أوروبا (3 مرات)",
+      "هداف دوري الأبطال التاريخي",
+      "أكثر لاعب تسجيلًا دوليًا في التاريخ"
+    ],
+    history: [
+      { team: "Sporting CP", from: 2002, to: 2003 },
+      { team: "Manchester United", from: 2003, to: 2009 },
+      { team: "Real Madrid", from: 2009, to: 2018 },
+      { team: "Juventus", from: 2018, to: 2021 },
+      { team: "Manchester United", from: 2021, to: 2022 },
+      { team: "Al-Nassr", from: 2023, to: 2025 }
+    ],
+    bio: "أسطورة كرة القدم الحديثة، هداف تاريخي حطم الكثير من الأرقام القياسية."
+  },
+  // 20 لاعب إضافي من الأفضل عالميًا:
+  {
+    id: "kane",
+    name_ar: "هاري كين",
+    name_en: "Harry Kane",
+    country: "🇬🇧 إنجلترا",
+    club: "بايرن ميونيخ",
+    pos: "forward",
+    img: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Harry_Kane_in_Russia_2.jpg",
+    basic: { goals: 300, assists: 80 },
+    matches: 500,
+    trophies: 10,
+    rating: 8.7,
+    advanced: { xG: 0.70, keyPasses: 1.2, dribblesPG: 0.5, passAcc: "82%", shotAcc: "58%" },
+    awards: ["هداف البريميرليغ 2020-21"],
+    history: [
+      { team: "Tottenham Hotspur", from: 2011, to: 2024 },
+      { team: "Bayern Munich", from: 2024, to: 2025 }
+    ],
+    bio: "مهاجم إنجليزي من الطراز العالمي، هداف طبيعي ودقيق في إنهاء الفرص."
+  },
+  {
+    id: "mbappe",
+    name_ar: "كيليان مبابي",
+    name_en: "Kylian Mbappé",
+    country: "🇫🇷 فرنسا",
+    club: "باريس سان جيرمان",
+    pos: "forward",
+    img: "https://upload.wikimedia.org/wikipedia/commons/e/e5/Kylian_Mbapp%C3%A9_2018.jpg",
+    basic: { goals: 230, assists: 90 },
+    matches: 350,
+    trophies: 15,
+    rating: 9.0,
+    advanced: { xG: 0.80, keyPasses: 1.5, dribblesPG: 2.0, passAcc: "84%", shotAcc: "55%" },
+    awards: ["أفضل لاعب شاب في العالم 2018"],
+    history: [
+      { team: "Monaco", from: 2015, to: 2018 },
+      { team: "Paris Saint-Germain", from: 2018, to: 2025 }
+    ],
+    bio: "جناح فرنسي سريع وقناص، أحد أبرز لاعبي الجيل الجديد."
+  },
+  {
+    id: "degea",
+    name_ar: "ديفيد دي خيا",
+    name_en: "David de Gea",
+    country: "🇪🇸 إسبانيا",
+    club: "مانشستر يونايتد",
+    pos: "goalkeeper",
+    img: "https://upload.wikimedia.org/wikipedia/commons/6/68/David_de_Gea_2017.jpg",
+    basic: { cleanSheets: 180 },
+    matches: 600,
+    trophies: 5,
+    rating: 8.2,
+    advanced: { savesPG: 3.5, passAcc: "75%" },
+    awards: ["أفضل حارس في البريميرليغ 2015"],
+    history: [
+      { team: "Atlético Madrid", from: 2009, to: 2011 },
+      { team: "Manchester United", from: 2011, to: 2025 }
+    ],
+    bio: "حارس مرمى إسباني بارع، معروف بردود فعله وسرعته في التصدي."
+  },
+  {
+    id: "neymar",
+    name_ar: "نيمار جونيور",
+    name_en: "Neymar Jr.",
+    country: "🇧🇷 البرازيل",
+    club: "باريس سان جيرمان",
+    pos: "wing",
+    img: "https://upload.wikimedia.org/wikipedia/commons/9/92/Neymar_PSG.jpg",
+    basic: { goals: 200, assists: 150 },
+    matches: 450,
+    trophies: 25,
+    rating: 9.0,
+    advanced: { keyPasses: 2.5, dribblesPG: 3.0, passAcc: "84%" },
+    awards: ["الحذاء الذهبي الفرنسي 2015"],
+    history: [
+      { team: "Santos", from: 2009, to: 2013 },
+      { team: "Barcelona", from: 2013, to: 2017 },
+      { team: "Paris Saint-Germain", from: 2017, to: 2025 }
+    ],
+    bio: "ساحر برازيلي، موهوب بالمراوغة والتسجيل والتمرير."
+  },
+  {
+    id: "pogba",
+    name_ar: "بول بوغبا",
+    name_en: "Paul Pogba",
+    country: "🇫🇷 فرنسا",
+    club: "يوروفنتوس",
+    pos: "mid",
+    img: "https://upload.wikimedia.org/wikipedia/commons/f/f0/Paul_Pogba_2017-03-09.jpg",
+    basic: { goals: 50, assists: 40 },
+    matches: 380,
+    trophies: 10,
+    rating: 8.0,
+    advanced: { keyPasses: 2.2, dribblesPG: 1.3, passAcc: "85%" },
+    awards: ["أفضل لاعب شاب في العالم 2013"],
+    history: [
+      { team: "Manchester United", from: 2011, to: 2012 },
+      { team: "Juventus", from: 2012, to: 2016 },
+      { team: "Manchester United", from: 2016, to: 2022 },
+      { team: "Juventus", from: 2022, to: 2025 }
+    ],
+    bio: "لاعب وسط فرنسي موهوب، يتميز بالقدرة على التمريرات الإبداعية والقوة البدنية."
+  },
+  {
+    id: "sterling",
+    name_ar: "رحيم سترلينج",
+    name_en: "Raheem Sterling",
+    country: "🇬🇧 إنجلترا",
+    club: "منشستر سيتي",
+    pos: "wing",
+    img: "https://upload.wikimedia.org/wikipedia/commons/e/e2/Raheem_Sterling_2018-07-14.jpg",
+    basic: { goals: 140, assists: 80 },
+    matches: 650,
+    trophies: 15,
+    rating: 8.1,
+    advanced: { xG: 0.53, keyPasses: 1.4, dribblesPG: 2.1, passAcc: "82%" },
+    awards: ["أفضل لاعب واعد 2015"],
+    history: [
+      { team: "Liverpool", from: 2010, to: 2015 },
+      { team: "Manchester City", from: 2015, to: 2025 }
+    ],
+    bio: "جناح إنجليزي سريع وفعال في استغلال الفرص."
+  },
+  {
+    id: "kante",
+    name_ar: "انغولو كانتي",
+    name_en: "N'Golo Kanté",
+    country: "🇫🇷 فرنسا",
+    club: "مانشستر يونايتد",
+    pos: "mid",
+    img: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Ngolo_Kante_2016.jpg",
+    basic: { goals: 20, assists: 40 },
+    matches: 400,
+    trophies: 12,
+    rating: 8.6,
+    advanced: { possessionsWonPG: 5.0, interceptionsPG: 2.3, passAcc: "88%" },
+    awards: ["أفضل لاعب في إنجلترا 2017"],
+    history: [
+      { team: "Caen", from: 2012, to: 2015 },
+      { team: "Leicester City", from: 2015, to: 2016 },
+      { team: "Chelsea", from: 2016, to: 2023 },
+      { team: "Manchester United", from: 2023, to: 2025 }
+    ],
+    bio: "لاعب وسط قوي ومثابر، يساهم كثيراً في قطع الكرات وبناء اللعب."
+  },
+  {
+    id: "ounas",
+    name_ar: "أدام أونانا",
+    name_en: "Edouard Mendy",
+    country: "🇸🇳 السنغال",
+    club: "تشيلسي",
+    pos: "goalkeeper",
+    img: "https://upload.wikimedia.org/wikipedia/commons/6/67/Andr%C3%A9_Onana.jpg",
+    basic: { cleanSheets: 120 },
+    matches: 250,
+    trophies: 6,
+    rating: 8.4,
+    advanced: { savesPG: 3.7, passAcc: "78%" },
+    awards: ["أفضل حارس في أوروبا 2021"],
+    history: [
+      { team: "Reims", from: 2016, to: 2018 },
+      { team: "Chelsea", from: 2020, to: 2025 }
+    ],
+    bio: "حارس سنغالي هادئ وموثوق، مميز بردود الفعل والتنظيم."
+  }
+];
+
+let state = {
+  pro: false,
+  theme: "dark",
+  query: "",
+  posFilter: "all",
+  countryFilter: "all"
+};
+// DOM refs (players)
+const grid = document.getElementById('grid');
+const count = document.getElementById('count');
+const searchInput = document.getElementById('search');
+const posSelect = document.getElementById('posFilter');
+const countrySelect = document.getElementById('countryFilter');
+const proBtn = document.getElementById('proBtn');
+const themeBtn = document.getElementById('themeBtn');
+const rightPane = document.getElementById('rightPane');
+const overlay = document.getElementById('overlay');
+const overlayContent = document.getElementById('overlayContent');
+const overlayClose = document.getElementById('overlayClose');
+const compareBtn = document.getElementById('compareBtn');
+
+function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[c]));
+}
+
+function translatePos(pos) {
+    const map = {
+        forward: "مهاجم",
+        wing: "جناح",
+        mid: "وسط",
+        def: "مدافع",
+        gk: "حارس"
+    };
+    return map[pos] || pos;
+}
+
+function renderCard(player) {
+    const card = document.createElement('article');
+    card.className = "card player-card";
+    card.dataset.id = player.id;
+    card.innerHTML = `
+        <div class="head">
+            ${player.img ? `<img class="thumb" src="${esc(player.img)}" alt="${esc(player.name_ar)}" loading="lazy" />` : `<div class="thumb-empty">صورة</div>`}
+        </div>
+        <div class="card-body">
+            <h3 class="player-name name-ar">${esc(player.name_ar)}</h3>
+            <div class="name-en">${esc(player.name_en)}</div>
+            <div class="meta">
+                <div class="chip">${player.country}</div>
+                <div class="chip">${translatePos(player.pos)}</div>
+            </div>
+            <div class="card-footer">
+                <button class="btn-small view-btn">تفاصيل</button>
+            </div>
+        </div>
+    `;
+    card.querySelector('.view-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        openDetail(player.id, {
+            pushState: true
+        });
+    });
+    card.addEventListener('click', (e) => {
+        if (e.target.closest('button')) return;
+        openDetail(player.id, {
+            pushState: true
+        });
+    });
+    return card;
+}
+
+function renderGrid() {
+    if (!grid) return;
+    grid.innerHTML = "";
+    const q = state.query.trim().toLowerCase();
+    const pos = state.posFilter;
+    const country = state.countryFilter;
+    const uniquePlayers = getUniquePlayers(PLAYERS);
+    let items = uniquePlayers.filter(p => {
+        const matchesQ = !q || p.name_ar.toLowerCase().includes(q) || p.name_en.toLowerCase().includes(q) || p.club.toLowerCase().includes(q);
+        const matchesPos = pos === 'all' || p.pos === pos;
+        const matchesCountry = country === 'all' || p.country === country;
+        return matchesQ && matchesPos && matchesCountry;
+    });
+    count.textContent = ` ${items.length} `;
+    items.forEach(p => grid.appendChild(renderCard(p)));
+    if (items.length === 0) {
+        const empty = document.createElement('div');
+        empty.style.padding = '36px';
+        empty.style.textAlign = 'center';
+        empty.innerHTML = `<div style="color:var(--muted-2); font-weight:900">لا يوجد نتائج</div>`;
+        grid.appendChild(empty);
+    }
+}
+
+function getUniquePlayers(players) {
+    const uniqueIds = new Set();
+    return players.filter(player => {
+        if (!uniqueIds.has(player.id)) {
+            uniqueIds.add(player.id);
+            return true;
+        }
+        return false;
+    });
+}
+
+function renderStars(rating) {
+    const s = Math.round((rating / 10) * 5 * 2) / 2;
+    const full = Math.floor(s);
+    const half = (s - full) >= 0.5 ? 1 : 0;
+    const empty = 5 - full - half;
+    let out = '';
+    for (let i = 0; i < full; i++) out += '<span class="star">★</span>';
+    if (half) out += '<span class="star">☆</span>';
+    for (let i = 0; i < empty; i++) out += '<span class="star" style="opacity:.25">★</span>';
+    return out;
+}
+
+function renderDetail(player, {
+    pro = false
+} = {}) {
+    if (!player) return `<div style="text-align:center;color:var(--muted-2);font-weight:700">اللاعب غير موجود</div>`;
+    const awardsHtml = (player.awards && player.awards.length) ? `<ul>${player.awards.map(a => `<li>${esc(a)}</li>`).join('')}</ul>` : `<div class="tiny muted">لا توجد جوائز مفصلة</div>`;
+    let historyHtml = `<div style="display:flex;flex-direction:column;gap:6px">`;
+    if (player.history && player.history.length) {
+        player.history.forEach(h => {
+            historyHtml += `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border-radius:6px">
+ <div style="font-weight:800">${esc(h.team)}</div>
+ <div style="font-size:.85rem;color:var(--muted-2)">${h.from} — ${h.to}</div>
+ </div>`;
+        });
+    }
+    historyHtml += `</div>`;
+    let advancedHtml = '';
+    if (pro && player.advanced) {
+        advancedHtml = `<div>
+ <h4 class="tiny muted">🔬 إحصائيات متقدمة</h4>
+ <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px">
+ ${Object.entries(player.advanced).map(([k, v]) => `
+ <div style="background:linear-gradient(90deg,#2b2b4d,#1f1f3a);padding:8px;border-radius:8px;border:var(--glass-border);">
+ <div style="font-weight:900;color:var(--neon-1)">${esc(String(v))}</div>
+ <div style="font-size:.78rem;color:var(--muted-2);margin-top:6px">${esc(k)}</div>
+ </div>`).join('')}
+ </div>
+ </div>`;
+    }
+    return `
+ <div style="display:flex;flex-direction:column;gap:10px">
+ <div style="display:flex;justify-content:space-between;align-items:center">
+ <div style="display:flex;gap:12px;align-items:center">
+ <div class="photo">
+ ${player.img ? `<img src="${esc(player.img)}" alt="${esc(player.name_ar)}">` : `<div class="photo-empty">صورة</div>`}
+ </div>
+ <div>
+ <h2>${esc(player.name_ar)} <div style="font-size:.9rem;color:var(--muted-2);font-weight:800">${esc(player.name_en)}</div></h2>
+ <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">
+ <div class="chip">${player.country}</div>
+ <div class="chip">${player.club}</div>
+ <div class="chip">${translatePos(player.pos)}</div>
+ </div>
+ <div style="margin-top:8px;font-weight:900;color:var(--neon-1)"><span class="stars" style="margin-left:8px">${renderStars(player.rating)}</span></div>
+ </div>
+ </div>
+ <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+ <button class="action print-card" data-player-id="${esc(player.id)}">طباعة البطاقة</button>
+ </div>
+ </div>
+ <div>
+ <h4 class="tiny muted">📊 إحصائيات أساسية</h4>
+ <div class="big-stats">
+ <div class="stat-card"><div class="num">${player.basic.goals}</div><div class="lbl">أهداف</div></div>
+ <div class="stat-card"><div class="num">${player.basic.assists}</div><div class="lbl">تمريرات</div></div>
+ <div class="stat-card"><div class="num">${player.matches}</div><div class="lbl">مباريات</div></div>
+ </div>
+ </div>
+ ${advancedHtml}
+ <div>
+ <h4 class="tiny muted">🏆 الجوائز</h4>
+ <div class="awards">${awardsHtml}</div>
+ </div>
+ <div>
+ <h4 class="tiny muted">🧾 تاريخ الأندية</h4>
+ ${historyHtml}
+ </div>
+ <div>
+ <h4 class="tiny muted">📝 نبذة</h4>
+ <div class="bio">${esc(player.bio)}</div>
+ </div>
+ </div>
+ `;
+}
+
+function openDetail(id, {
+    pushState = false
+} = {}) {
+    const player = PLAYERS.find(p => p.id === id);
+    if (!player) {
+        const content = `<div style="text-align:center; color:var(--muted-2); font-weight:700; padding:20px;">اللاعب غير موجود.</div>`;
+        if (window.innerWidth >= 880) {
+            rightPane.innerHTML = content;
+        } else {
+            overlayContent.innerHTML = content;
+            overlay.classList.add('show');
+            overlay.setAttribute('aria-hidden', 'false');
+        }
+        return;
+    }
+    const html = renderDetail(player, {
+        pro: state.pro
+    });
+    if (window.innerWidth >= 880) {
+        rightPane.innerHTML = html;
+    } else {
+        overlayContent.innerHTML = html;
+        overlay.classList.add('show');
+        overlay.setAttribute('aria-hidden', 'false');
+    }
+    // Add event listeners after content is rendered
+    const container = window.innerWidth >= 880 ? rightPane : overlayContent;
+    const printBtn = container.querySelector('.print-card');
+    if (printBtn) printBtn.addEventListener('click', () => printPlayerCard(player));
+    const url = new URL(window.location.href);
+    url.searchParams.set('player', id);
+    if (pushState) history.pushState({
+        player: id
+    }, '', url);
+    else history.replaceState({
+        player: id
+    }, '', url);
+}
+
+function closeOverlay() {
+    overlay.classList.remove('show');
+    overlay.setAttribute('aria-hidden', 'true');
+    overlayContent.innerHTML = '';
+}
+
+function exportPlayerJSON(player) {
+    const blob = new Blob([JSON.stringify(player, null, 2)], {
+        type: 'application/json'
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${player.id}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+}
+
+function printPlayerCard(player) {
+    const w = window.open('', '_blank');
+    const html = `
+ <html>
+ <head><title>بطاقة ${esc(player.name_ar)}</title>
+ <style>
+ body{font-family:Tahoma,Arial;background:#fff;color:#000;padding:18px}
+ .card{border:1px solid #222;padding:12px;border-radius:8px;max-width:400px}
+ h2{margin:0}
+ </style>
+ </head>
+ <body>
+ <div class="card">
+ <h2>${esc(player.name_ar)} — ${esc(player.name_en)}</h2>
+ ${player.img ? `<img src="${esc(player.img)}" style="width:100%;border-radius:8px;margin-top:8px"/>` : `<div style="width:100px;height:100px;background:#eee;border-radius:8px;margin:8px auto;display:flex;align-items:center;justify-content:center">صورة</div>`}
+ <p>النادي: ${esc(player.club)}</p>
+ <p>الدولة: ${esc(player.country)}</p>
+ <p>الأهداف: ${player.basic.goals} — التمريرات: ${player.basic.assists}</p>
+ </div>
+ </body>
+ </html>
+ `;
+    w.document.write(html);
+    w.document.close();
+    w.print();
+}
+
+// Events (players)
+if (searchInput) searchInput.addEventListener('input', (e) => {
+    state.query = e.target.value;
+    renderGrid();
+});
+
+// Fix for select elements
+const selects = document.querySelectorAll('.select');
+selects.forEach(select => {
+    select.addEventListener('focus', () => {
+        select.classList.add('active-select');
+    });
+    select.addEventListener('blur', () => {
+        select.classList.remove('active-select');
+    });
+});
+
+if (posSelect) posSelect.addEventListener('change', (e) => {
+    state.posFilter = e.target.value;
+    renderGrid();
+});
+if (countrySelect) countrySelect.addEventListener('change', (e) => {
+    state.countryFilter = e.target.value;
+    renderGrid();
+});
+if (proBtn) proBtn.addEventListener('click', () => {
+    state.pro = !state.pro;
+    proBtn.classList.toggle('active', state.pro);
+    renderGrid();
+    const params = new URLSearchParams(window.location.search);
+    const pid = params.get('player');
+    if (pid) openDetail(pid, {
+        pushState: false
+    });
+});
+if (themeBtn) themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    themeBtn.classList.toggle('active');
+    state.theme = state.theme === 'dark' ? 'light' : 'dark';
+});
+if (overlayClose) overlayClose.addEventListener('click', () => {
+    closeOverlay();
+    const url = new URL(window.location.href);
+    url.searchParams.delete('player');
+    history.pushState({}, '', url);
+});
+window.addEventListener('popstate', (e) => {
+    const params = new URLSearchParams(window.location.search);
+    const pid = params.get('player');
+    if (pid) openDetail(pid, {
+        pushState: false
+    });
+    else {
+        closeOverlay();
+        rightPane.innerHTML = '<div style="text-align:center;color:var(--muted-2);font-weight:700">اضغط على أي لاعب لعرض التفاصيل هنا</div>';
+    }
+});
+window.addEventListener('resize', () => {
+    if (window.innerWidth >= 880 && overlay.classList.contains('show')) {
+        rightPane.innerHTML = overlayContent.innerHTML;
+        overlay.classList.remove('show');
+    }
+});
+
+function initPlayers() {
+    const params = new URLSearchParams(window.location.search);
+    const pid = params.get('player');
+    if (pid) {
+        document.querySelector(`.nav-link[data-target="playersPage"]`).click();
+        openDetail(pid, {
+            pushState: false
+        });
+    } else {
+        renderGrid();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initPlayers();
+});
+
+window.TOP_GOAL = {
+    PLAYERS,
+    renderGrid,
+    openDetail,
+    exportPlayerJSON,
+    printPlayerCard
+};
+
+
+// 🚀 Player Comparison Module
+let selectedPlayers = [];
+
+// Handle click on "compare" button to open the overlay
+if (compareBtn) {
+    compareBtn.addEventListener("click", () => {
+        overlayContent.innerHTML = `
+            <h2 class="gradient-text" style="text-align:center;margin:15px 0">⚽ اختر لاعبين للمقارنة</h2>
+            <p style="text-align:center;color:var(--muted-2);font-weight:700">اضغط على لاعبين من القائمة ثم اضغط "ابدأ المقارنة"</p>
+            <div style="text-align:center;margin-top:15px">
+                <button id="startCompareBtn" class="toggle-btn" disabled>ابدأ المقارنة</button>
+            </div>
+        `;
+        overlay.classList.add('show');
+        overlay.setAttribute("aria-hidden", "false");
+        selectedPlayers = [];
+        resetSelections();
+    });
+}
+
+// Handle player card clicks for selection
+if (grid) {
+    grid.addEventListener("click", e => {
+        const card = e.target.closest(".player-card");
+        if (!card) return;
+
+        const playerId = card.dataset.id;
+        const index = selectedPlayers.indexOf(playerId);
+
+        if (index > -1) {
+            // Deselect
+            selectedPlayers.splice(index, 1);
+            card.classList.remove("selected");
+        } else {
+            // Select
+            selectedPlayers.push(playerId);
+            card.classList.add("selected");
+        }
+
+        const startBtn = document.getElementById("startCompareBtn");
+        if (startBtn) {
+            startBtn.disabled = selectedPlayers.length !== 2;
+        }
+    });
+}
+
+
+// Handle "Start Comparison" button click
+document.addEventListener("click", e => {
+    if (e.target && e.target.id === "startCompareBtn") {
+        if (selectedPlayers.length !== 2) {
+            alert("لازم تختار لاعبين أولاً");
+            return;
+        }
+
+        const [id1, id2] = selectedPlayers;
+        const player1 = PLAYERS.find(p => p.id === id1);
+        const player2 = PLAYERS.find(p => p.id === id2);
+
+        if (!player1 || !player2) {
+            alert("❌ مش لاقي اللاعبين المختارين");
+            return;
+        }
+
+        // Get basic stats to compare
+        const basicStats = Object.keys(player1.basic);
+        const advancedStats = state.pro ? Object.keys(player1.advanced) : [];
+
+        let rows = "";
+
+        // Basic stats
+        for (const stat of basicStats) {
+            const val1 = player1.basic[stat];
+            const val2 = player2.basic[stat];
+            rows += `
+                <tr>
+                    <td>${esc(stat)}</td>
+                    <td class="${val1 > val2 ? 'better' : val1 < val2 ? 'worse' : ''}">${esc(String(val1))}</td>
+                    <td class="${val2 > val1 ? 'better' : val2 < val1 ? 'worse' : ''}">${esc(String(val2))}</td>
+                </tr>
+            `;
+        }
+
+        // Advanced stats (if PRO mode is active)
+        if (state.pro) {
+            for (const stat of advancedStats) {
+                const val1 = player1.advanced[stat];
+                const val2 = player2.advanced[stat];
+                rows += `
+                    <tr>
+                        <td style="font-weight:700">${esc(stat)} (PRO)</td>
+                        <td>${esc(String(val1))}</td>
+                        <td>${esc(String(val2))}</td>
+                    </tr>
+                `;
+            }
+        }
+
+        overlayContent.innerHTML = `
+            <h2 class="gradient-text" style="text-align:center;margin:15px 0">📊 نتيجة المقارنة</h2>
+            <div style="overflow-x:auto">
+                <table class="compare-table" style="width:100%; border-collapse:collapse; text-align:center">
+                    <thead>
+                        <tr style="background:var(--muted-bg)">
+                            <th style="padding:8px">الميزة</th>
+                            <th style="padding:8px">${esc(player1.name_ar)}</th>
+                            <th style="padding:8px">${esc(player2.name_ar)}</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows || "<tr><td colspan='3'>لا توجد بيانات</td></tr>"}</tbody>
+                </table>
+            </div>
+            <div style="text-align:center; margin-top:12px">
+                <button class="toggle-btn" id="backToSelect">🔄 اختر لاعبين آخرين</button>
+            </div>
+        `;
+
+        document.getElementById("backToSelect").addEventListener("click", () => {
+            compareBtn.click();
+        });
+    }
+});
+
+// Close overlay on button click
+if (overlayClose) {
+    overlayClose.addEventListener("click", () => {
+        overlay.classList.remove("show");
+        overlay.setAttribute("aria-hidden", "true");
+        resetSelections();
+    });
+}
+
+function resetSelections() {
+    document.querySelectorAll(".player-card.selected").forEach(c => {
+        c.classList.remove("selected");
+    });
+}
+
+
+// Function to show a temporary toast notification
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  // Animate the toast in
+  setTimeout(() => {
+    toast.style.transform = 'translateY(-10px)';
+    toast.style.opacity = '1';
+  }, 10);
+
+  // Animate the toast out and remove it
+  setTimeout(() => {
+    toast.style.transform = 'translateY(-60px)';
+    toast.style.opacity = '0';
+    toast.addEventListener('transitionend', () => {
+      toast.remove();
+    });
+  }, 2500); // Display for 2.5 seconds
+}
+
+
+// Velora AI Chat Integration
+const chatToggleBtn = document.getElementById('chat-toggle-btn');
+const chatModal = document.getElementById('chat-modal');
+const chatCloseBtn = document.getElementById('chat-close-btn');
+
+chatToggleBtn.addEventListener('click', () => {
+    chatModal.classList.remove('hidden');
+    // Add a class to make it visible and animated
+    chatModal.classList.add('show');
+});
+
+chatCloseBtn.addEventListener('click', () => {
+    // Hide the chat modal and remove the "show" class
+    chatModal.classList.remove('show');
+    // We add a short delay before adding the 'hidden' class to allow the animation to complete
+    setTimeout(() => {
+        chatModal.classList.add('hidden');
+    }, 300);
+});
+
+// The following is the integrated JS for the new chat functionality
+feather.replace();
+
+const geminiApiKey = "AIzaSyCwSuE3CBnBYJ17tsllNnwJPCYz1YsA-5I";
+const geminiModel = "gemini-1.5-flash";
+const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent`;
+
+const elements = {
+  log: document.getElementById('log'),
+  input: document.getElementById('q'),
+  sendBtn: document.getElementById('send-btn'),
+  welcomeMsg: document.getElementById('welcome-message')
+};
+
+let currentChat = [];
+
+function createBubble(content, isUser) {
+  const div = document.createElement('div');
+  div.className = `chat-bubble ${isUser ? 'user-bubble' : 'bot-bubble'}`;
+  div.innerHTML = content.replace(/\n/g, '<br>');
+  elements.log.appendChild(div);
+  elements.log.scrollTop = elements.log.scrollHeight;
+}
+
+function hideWelcome() {
+  if (elements.welcomeMsg) {
+    elements.welcomeMsg.style.display = 'none';
+  }
+}
+
+async function sendPrompt() {
+  const val = elements.input.value.trim();
+  if (!val) return;
+
+  hideWelcome();
+  createBubble(val, true);
+  currentChat.push({ role: 'user', content: val });
+  elements.input.value = '';
+  elements.sendBtn.disabled = true;
+
+  const botDiv = document.createElement('div');
+  botDiv.className = 'chat-bubble bot-bubble';
+  botDiv.innerHTML = '...';
+  elements.log.appendChild(botDiv);
+  elements.log.scrollTop = elements.log.scrollHeight;
+
+  try {
+    const response = await axios.post(`${geminiEndpoint}?key=${geminiApiKey}`, {
+      contents: currentChat.map(msg => ({
+        role: msg.role === 'user' ? 'user' : 'model',
+        parts: [{ text: msg.content }]
+      }))
+    });
+
+    const answer = response.data.candidates[0].content.parts[0].text.trim();
+    botDiv.innerHTML = answer;
+    currentChat.push({ role: 'model', content: answer });
+  } catch (e) {
+    botDiv.innerHTML = '⚠️ خطأ في الاتصال بالخادم';
+  }
+
+  elements.sendBtn.disabled = false;
+}
+
+function quickSend(text) {
+  elements.input.value = text;
+  sendPrompt();
+}
+
+elements.input.addEventListener('input', () => {
+  elements.sendBtn.disabled = elements.input.value.trim() === '';
+});
+elements.sendBtn.addEventListener('click', sendPrompt);
+elements.input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendPrompt();
+  }
+});
+</script>
+</body>
+</html>
+
+<script>/*************************************************************************
+ * INTEGRATED JS
+ * - Site navigation (pages)
+ * - Integrated original PLAYERS array + rendering logic (preserved)
+ * - ChatPlus: local AI chat that replies to any message
+ *************************************************************************/
+
+/* ---------------- SITE NAVIGATION ---------------- */
+document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-target]');
+    if (t && t.dataset.target) {
+        const target = t.dataset.target;
+        // update active class
+        document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+        document.querySelector(`.nav-link[data-target="${target}"]`)?.classList.add('active');
+        // show page
+        document.querySelectorAll('.site-pages .page').forEach(p => p.classList.remove('active'));
+        const page = document.getElementById(target);
+        if (page) page.classList.add('active');
+        if (target === 'playersPage') {
+            renderGrid();
+            const params = new URLSearchParams(window.location.search);
+            const pid = params.get('player');
+            if (pid) openDetail(pid, {
+                pushState: false
+            });
+        }
+    }
+});
+
+/* ---------------- PLAYERS DATA (from original, but cleaned) ---------------- */
+const PLAYERS = [{
+    id: "suarez",
+    name_ar: "لويس سواريز",
+    name_en: "Luis Suárez",
+    country: "🇺🇾 أوروغواي",
+    club: "أتلتيكو مدريد",
+    pos: "forward",
+    img: "https://upload.wikimedia.org/wikipedia/commons/0/0a/Luis_Suarez_FCB_2014.jpg",
+    basic: {
+        goals: 517,
+        assists: 214
+    },
+    matches: 800,
+    trophies: 21,
+    rating: 9.0,
+    advanced: {
+        xG: 0.58,
+        keyPasses: 1.8,
+        dribblesPG: 1.7,
+        passAcc: "81%",
+        shotAcc: "57%"
+    },
+    awards: ["الحذاء الذهبي الأوروبي 2014-15", "أفضل لاعب في أوروغواي 2010,2011"],
+    history: [{
+        team: "Nacional",
+        from: 2005,
+        to: 2006
+    }, {
+        team: "Groningen",
+        from: 2006,
+        to: 2007
+    }, {
+        team: "Ajax",
+        from: 2007,
+        to: 2011
+    }, {
+        team: "Liverpool",
+        from: 2011,
+        to: 2014
+    }, {
+        team: "Barcelona",
+        from: 2014,
+        to: 2020
+    }, {
+        team: "Atlético Madrid",
+        from: 2020,
+        to: 2025
+    }],
+    bio: "أحد أخطر المهاجمين في جيله، يمتاز بالمهارة العالية والإنهاء الحاسم أمام المرمى."
+}, {
+    id: "barella",
+    name_ar: "نيكولو باريلا",
+    name_en: "Nicolò Barella",
+    country: "🇮🇹 إيطاليا",
+    club: "إنتر ميلان",
+    pos: "mid",
+    img: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Nicol%C3%B2_Barella_in_2021.jpg",
+    basic: {
+        goals: 52,
+        assists: 66
+    },
+    matches: 290,
+    trophies: 9,
+    rating: 8.7,
+    advanced: {
+        keyPasses: 2.3,
+        dribblesPG: 1.6,
+        passAcc: "85%"
+    },
+    awards: ["أفضل لاعب شاب في إيطاليا 2018"],
+    history: [{
+        team: "Cagliari",
+        from: 2014,
+        to: 2019
+    }, {
+        team: "Inter Milan",
+        from: 2019,
+        to: 2025
+    }],
+    bio: "لاعب وسط إيطالي مميز، يمتاز بالقدرة على الضغط وصناعة اللعب."
+}, {
+    id: "reus",
+    name_ar: "ماركو رويس",
+    name_en: "Marco Reus",
+    country: "🇩🇪 ألمانيا",
+    club: "بوروسيا دورتموند",
+    pos: "wing",
+    img: "https://upload.wikimedia.org/wikipedia/commons/9/92/Marco_Reus_2014.jpg",
+    basic: {
+        goals: 170,
+        assists: 110
+    },
+    matches: 430,
+    trophies: 6,
+    rating: 8.6,
+    advanced: {
+        xG: 0.34,
+        keyPasses: 2.0,
+        dribblesPG: 2.3,
+        passAcc: "82%",
+        shotAcc: "50%"
+    },
+    awards: ["أفضل لاعب ألماني 2012"],
+    history: [{
+        team: "Borussia Mönchengladbach",
+        from: 2009,
+        to: 2012
+    }, {
+        team: "Borussia Dortmund",
+        from: 2012,
+        to: 2025
+    }],
+    bio: "جناح ألماني سريع وماهر، يمتاز بالمراوغات والتمريرات الدقيقة."
+}, {
+    id: "salah",
+    name_ar: "محمد صلاح",
+    name_en: "Mohamed Salah",
+    country: "🇪🇬 مصر",
+    club: "ليفربول",
+    pos: "wing",
+    img: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Mohamed_Salah%2C_Liverpool_FC_gegen_1._FSV_Mainz_05_%28Testspiel_23._Juli_2021%29_26.jpg",
+    basic: {
+        goals: 243,
+        assists: 113
+    },
+    matches: 397,
+    trophies: 7,
+    rating: 9.2,
+    advanced: {
+        xG: 0.55,
+        keyPasses: 2.3,
+        dribblesPG: 3.4,
+        passAcc: "82%",
+        shotAcc: "58%"
+    },
+    awards: [
+        "أفضل لاعب في أفريقيا (2017، 2018)",
+        "الحذاء الذهبي للدوري الإنجليزي (3 مرات)",
+        "أفضل لاعب في الدوري الإنجليزي (PFA) مرتين",
+        "جائزة صانع الألعاب في الدوري الإنجليزي (2022)"
+    ],
+    history: [{
+        team: "المقاولون العرب",
+        from: 2010,
+        to: 2012
+    }, {
+        team: "بازل",
+        from: 2012,
+        to: 2014
+    }, {
+        team: "تشيلسي",
+        from: 2014,
+        to: 2016
+    }, {
+        team: "فيورنتينا",
+        from: 2015,
+        to: 2015
+    }, {
+        team: "روما",
+        from: 2016,
+        to: 2017
+    }, {
+        team: "ليفربول",
+        from: 2017,
+        to: 2025
+    }],
+    bio: "أيقونة الكرة المصرية والإفريقية، أحد أبرز هدافي ليفربول التاريخيين، يتميز بسرعته ومهاراته الكبيرة وقدرته على التسجيل وصناعة الأهداف في المباريات الكبرى."
+}, {
+    id: "messi",
+    name_ar: "ليونيل ميسي",
+    name_en: "Lionel Messi",
+    country: "🇦🇷 الأرجنتين",
+    club: "ميامي إنتر",
+    pos: "forward",
+    img: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Leo_Messi_v_Granada_2014.jpg",
+    basic: {
+        goals: 877,
+        assists: 391
+    },
+    matches: 1118,
+    trophies: 45,
+    rating: 9.8,
+    advanced: {
+        xG: 0.72,
+        keyPasses: 3.4,
+        dribblesPG: 2.8,
+        passAcc: "89%",
+        shotAcc: "60%"
+    },
+    awards: [
+        "الكرة الذهبية (8 مرات)",
+        "الحذاء الذهبي الأوروبي (6 مرات)",
+        "هداف برشلونة التاريخي (672 هدف)",
+        "أكثر من سجل في عام واحد (91 هدف 2012)",
+        "هداف الأرجنتين التاريخي (112 هدف)"
+    ],
+    history: [{
+        team: "برشلونة",
+        from: 2004,
+        to: 2021
+    }, {
+        team: "باريس سان جيرمان",
+        from: 2021,
+        to: 2023
+    }, {
+        team: "ميامي إنتر",
+        from: 2023,
+        to: 2025
+    }],
+    bio: "أسطورة كرة القدم، يمتلك أرقاماً قياسية مذهلة، غزير الأهداف وصانع لعب مبدع، حصد 45 بطولة و8 كرات ذهبية ويُعتبر من أعظم اللاعبين في التاريخ."
+}, {
+    id: "ronaldo",
+    name_ar: "كريستيانو رونالدو",
+    name_en: "Cristiano Ronaldo",
+    country: "🇵🇹 البرتغال",
+    club: "النصر",
+    pos: "forward",
+    img: "https://upload.wikimedia.org/wikipedia/commons/3/3c/Cristiano_Ronaldo.jpg",
+    basic: {
+        goals: 938,
+        assists: 231
+    },
+    matches: 1270,
+    trophies: 34,
+    rating: 9.5,
+    advanced: {
+        xG: 0.75,
+        keyPasses: 1.9,
+        dribblesPG: 2.2,
+        passAcc: "83%",
+        shotAcc: "61%"
+    },
+    awards: [
+        "الكرة الذهبية (5 مرات)",
+        "الحذاء الذهبي الأوروبي (4 مرات)",
+        "أفضل لاعب في أوروبا (3 مرات)",
+        "هداف دوري الأبطال التاريخي",
+        "أكثر لاعب تسجيلًا دوليًا في التاريخ"
+    ],
+    history: [{
+        team: "سبورتينغ لشبونة",
+        from: 2002,
+        to: 2003
+    }, {
+        team: "مانشستر يونايتد",
+        from: 2003,
+        to: 2009
+    }, {
+        team: "ريال مدريد",
+        from: 2009,
+        to: 2018
+    }, {
+        team: "يوفنتوس",
+        from: 2018,
+        to: 2021
+    }, {
+        team: "مانشستر يونايتد",
+        from: 2021,
+        to: 2022
+    }, {
+        team: "النصر",
+        from: 2023,
+        to: 2025
+    }],
+    bio: "أسطورة كرة القدم الحديثة، هدافٌ تاريخي حطم العديد من الأرقام القياسية مع الأندية والمنتخب، يُعد أحد أعظم اللاعبين عبر العصور."
+}, {
+    id: "modric",
+    name_ar: "لوكا مودريتش",
+    name_en: "Luka Modrić",
+    country: "🇭🇷 كرواتيا",
+    club: "AC Milan",
+    pos: "mid",
+    img: "https://upload.wikimedia.org/wikipedia/commons/5/55/Luka_Modri%C4%87_in_2018.jpg",
+    basic: {
+        goals: 75,
+        assists: 117,
+    },
+    matches: 813,
+    trophies: 28,
+    rating: 9.1,
+    advanced: {
+        xG: 0.18,
+        keyPasses: 2.5,
+        dribblesPG: 1.0,
+        passAcc: "88%"
+    },
+    awards: [
+        "كرة ذهبية (Ballon d'Or 2018)",
+        "أفضل لاعب في العالم (The Best FIFA 2018)"
+    ],
+    history: [{
+        team: "Dinamo Zagreb",
+        from: 2003,
+        to: 2008
+    }, {
+        team: "Tottenham",
+        from: 2008,
+        to: 2012
+    }, {
+        team: "Real Madrid",
+        from: 2012,
+        to: 2025
+    }, {
+        team: "AC Milan",
+        from: 2025,
+        to: null
+    }],
+    bio: "مسيطر على إيقاع اللعب وذكي في التمرير وصنع الفارق."
+}, {
+    id: "bernardo",
+    name_ar: "بيرناندو سيلفا",
+    name_en: "Bernardo Silva",
+    country: "🇵🇹 البرتغال",
+    club: "مانشستر سيتي",
+    pos: "mid",
+    img: "https://upload.wikimedia.org/wikipedia/commons/6/63/Bernardo_Silva_2017.jpg",
+    basic: {
+        goals: 112,
+        assists: 100,
+    },
+    matches: 617,
+    trophies: 17,
+    rating: 8.4,
+    advanced: {
+        keyPasses: 2.8,
+        dribblesPG: 2.0,
+        pressures: 3.5,
+        passAcc: "88%"
+    },
+    awards: ["مرونة تكتيكية", "فريق العام PFA (2019، 2022)", "فريق دوري أبطال أوروبا المثالي (2022–23)"],
+    history: [{
+        team: "موناكو",
+        from: 2013,
+        to: 2017
+    }, {
+        team: "مانشستر سيتي",
+        from: 2017,
+        to: 2025
+    }],
+    bio: "لاعب متعدد الأدوار يضيف اتزانًا تكتيكيًا للفريق ويصنع الفارق بحركاته الدقيقة وإبداعه في وسط الملعب."
+}, ];
+
+let state = {
+    pro: false,
+    theme: "dark",
+    query: "",
+    posFilter: "all",
+    countryFilter: "all"
+};
+
+// DOM refs (players)
+const grid = document.getElementById('grid');
+const count = document.getElementById('count');
+const searchInput = document.getElementById('search');
+const posSelect = document.getElementById('posFilter');
+const countrySelect = document.getElementById('countryFilter');
+const proBtn = document.getElementById('proBtn');
+const themeBtn = document.getElementById('themeBtn');
+const overlay = document.getElementById('overlay');
+const overlayContent = document.getElementById('overlayContent');
+const overlayClose = document.getElementById('overlayClose');
+
+function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[c]));
+}
+
+function translatePos(pos) {
+    const map = {
+        forward: "مهاجم",
+        wing: "جناح",
+        mid: "وسط",
+        def: "مدافع",
+        gk: "حارس"
+    };
+    return map[pos] || pos;
+}
+
+function renderCard(player) {
+    const card = document.createElement('article');
+    card.className = "card player-card";
+    card.dataset.id = player.id;
+    card.innerHTML = `
+        <div class="head">
+            ${player.img ? `<img class="thumb" src="${esc(player.img)}" alt="${esc(player.name_ar)}" loading="lazy" />` : `<div class="thumb-empty">صورة</div>`}
+        </div>
+        <div class="card-body">
+            <h3 class="player-name name-ar">${esc(player.name_ar)}</h3>
+            <div class="name-en">${esc(player.name_en)}</div>
+            <div class="meta">
+                <div class="chip">${player.country}</div>
+                <div class="chip">${translatePos(player.pos)}</div>
+            </div>
+            <div class="card-footer">
+                <button class="btn-small view-btn">تفاصيل</button>
+            </div>
+        </div>
+    `;
+    card.querySelector('.view-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        openDetail(player.id, {
+            pushState: true
+        });
+    });
+    // Removed the general card click event
+    // card.addEventListener('click', (e) => {
+    //     if (e.target.closest('button')) return;
+    //     openDetail(player.id, { pushState: true });
+    // });
+    return card;
+}
+
+function renderGrid() {
+    if (!grid) return;
+    grid.innerHTML = "";
+    const q = state.query.trim().toLowerCase();
+    const pos = state.posFilter;
+    const country = state.countryFilter;
+    const uniquePlayers = getUniquePlayers(PLAYERS);
+    let items = uniquePlayers.filter(p => {
+        const matchesQ = !q || p.name_ar.toLowerCase().includes(q) || p.name_en.toLowerCase().includes(q) || p.club.toLowerCase().includes(q);
+        const matchesPos = pos === 'all' || p.pos === pos;
+        const matchesCountry = country === 'all' || p.country === country;
+        return matchesQ && matchesPos && matchesCountry;
+    });
+    count.textContent = ` ${items.length} `;
+    items.forEach(p => grid.appendChild(renderCard(p)));
+    if (items.length === 0) {
+        const empty = document.createElement('div');
+        empty.style.padding = '36px';
+        empty.style.textAlign = 'center';
+        empty.innerHTML = `<div style="color:var(--muted-2); font-weight:900">لا يوجد نتائج</div>`;
+        grid.appendChild(empty);
+    }
+}
+
+function getUniquePlayers(players) {
+    const uniqueIds = new Set();
+    return players.filter(player => {
+        if (!uniqueIds.has(player.id)) {
+            uniqueIds.add(player.id);
+            return true;
+        }
+        return false;
+    });
+}
+
+function renderStars(rating) {
+    const s = Math.round((rating / 10) * 5 * 2) / 2;
+    const full = Math.floor(s);
+    const half = (s - full) >= 0.5 ? 1 : 0;
+    const empty = 5 - full - half;
+    let out = '';
+    for (let i = 0; i < full; i++) out += '<span class="star">★</span>';
+    if (half) out += '<span class="star">☆</span>';
+    for (let i = 0; i < empty; i++) out += '<span class="star" style="opacity:.25">★</span>';
+    return out;
+}
+
+function renderDetail(player, {
+    pro = false
+} = {}) {
+    if (!player) return `<div style="text-align:center;color:var(--muted-2);font-weight:700">اللاعب غير موجود</div>`;
+    const awardsHtml = (player.awards && player.awards.length) ? `<ul>${player.awards.map(a => `<li>${esc(a)}</li>`).join('')}</ul>` : `<div class="tiny muted">لا توجد جوائز مفصلة</div>`;
+    let historyHtml = `<div style="display:flex;flex-direction:column;gap:6px">`;
+    if (player.history && player.history.length) {
+        player.history.forEach(h => {
+            historyHtml += `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border-radius:6px">
+ <div style="font-weight:800">${esc(h.team)}</div>
+ <div style="font-size:.85rem;color:var(--muted-2)">${h.from} — ${h.to}</div>
+ </div>`;
+        });
+    }
+    historyHtml += `</div>`;
+    let advancedHtml = '';
+    if (pro && player.advanced) {
+        advancedHtml = `<div>
+ <h4 class="tiny muted">🔬 إحصائيات متقدمة</h4>
+ <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px">
+ ${Object.entries(player.advanced).map(([k, v]) => `
+ <div style="background:linear-gradient(90deg,#2b2b4d,#1f1f3a);padding:8px;border-radius:8px;border:var(--glass-border);">
+ <div style="font-weight:900;color:var(--neon-1)">${esc(String(v))}</div>
+ <div style="font-size:.78rem;color:var(--muted-2);margin-top:6px">${esc(k)}</div>
+ </div>`).join('')}
+ </div>
+ </div>`;
+    }
+    return `
+ <div style="display:flex;flex-direction:column;gap:10px">
+ <div style="display:flex;justify-content:space-between;align-items:center">
+ <div class="photo">
+ ${player.img ? `<img src="${esc(player.img)}" alt="${esc(player.name_ar)}">` : `<div class="photo-empty">صورة</div>`}
+ </div>
+ <div>
+ <h2>${esc(player.name_ar)} <div style="font-size:.9rem;color:var(--muted-2);font-weight:800">${esc(player.name_en)}</div></h2>
+ <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">
+ <div class="chip">${player.country}</div>
+ <div class="chip">${player.club}</div>
+ <div class="chip">${translatePos(player.pos)}</div>
+ </div>
+ <div style="margin-top:8px;font-weight:900;color:var(--neon-1)"><span class="stars" style="margin-left:8px">${renderStars(player.rating)}</span></div>
+ </div>
+ </div>
+ <button class="action print-card" data-player-id="${esc(player.id)}">طباعة البطاقة</button>
+ <div>
+ <h4 class="tiny muted">📊 إحصائيات أساسية</h4>
+ <div class="big-stats">
+ <div class="stat-card"><div class="num">${player.basic.goals}</div><div class="lbl">أهداف</div></div>
+ <div class="stat-card"><div class="num">${player.basic.assists}</div><div class="lbl">تمريرات</div></div>
+ <div class="stat-card"><div class="num">${player.matches}</div><div class="lbl">مباريات</div></div>
+ </div>
+ </div>
+ ${advancedHtml}
+ <div>
+ <h4 class="tiny muted">🏆 الجوائز</h4>
+ <div class="awards">${awardsHtml}</div>
+ </div>
+ <div>
+ <h4 class="tiny muted">🧾 تاريخ الأندية</h4>
+ ${historyHtml}
+ </div>
+ <div>
+ <h4 class="tiny muted">📝 نبذة</h4>
+ <div class="bio">${esc(player.bio)}</div>
+ </div>
+ </div>
+ `;
+}
+
+function openDetail(id, {
+    pushState = false
+} = {}) {
+    const player = PLAYERS.find(p => p.id === id);
+    if (!player) {
+        const content = `<div style="text-align:center; color:var(--muted-2); font-weight:700; padding:20px;">اللاعب غير موجود.</div>`;
+        overlayContent.innerHTML = content;
+        overlay.classList.add('show');
+        overlay.setAttribute('aria-hidden', 'false');
+        return;
+    }
+    const html = renderDetail(player, {
+        pro: state.pro
+    });
+    overlayContent.innerHTML = html;
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden', 'false');
+    // Add event listeners after content is rendered
+    const container = overlayContent;
+    const printBtn = container.querySelector('.print-card');
+    if (printBtn) printBtn.addEventListener('click', () => printPlayerCard(player));
+    const url = new URL(window.location.href);
+    url.searchParams.set('player', id);
+    if (pushState) history.pushState({
+        player: id
+    }, '', url);
+    else history.replaceState({
+        player: id
+    }, '', url);
+}
+
+function closeOverlay() {
+    overlay.classList.remove('show');
+    overlay.setAttribute('aria-hidden', 'true');
+    overlayContent.innerHTML = '';
+}
+
+function exportPlayerJSON(player) {
+    const blob = new Blob([JSON.stringify(player, null, 2)], {
+        type: 'application/json'
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${player.id}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+}
+
+function printPlayerCard(player) {
+    const w = window.open('', '_blank');
+    const html = `
+ <html>
+ <head><title>بطاقة ${esc(player.name_ar)}</title>
+ <style>
+ body{font-family:Tahoma,Arial;background:#fff;color:#000;padding:18px}
+ .card{border:1px solid #222;padding:12px;border-radius:8px;max-width:400px}
+ h2{margin:0}
+ </style>
+ </head>
+ <body>
+ <div class="card">
+ <h2>${esc(player.name_ar)} — ${esc(player.name_en)}</h2>
+ ${player.img ? `<img src="${esc(player.img)}" style="width:100%;border-radius:8px;margin-top:8px"/>` : `<div style="width:100px;height:100px;background:#eee;border-radius:8px;margin:8px auto;display:flex;align-items:center;justify-content:center">صورة</div>`}
+ <p>النادي: ${esc(player.club)}</p>
+ <p>الدولة: ${esc(player.country)}</p>
+ <p>الأهداف: ${player.basic.goals} — التمريرات: ${player.basic.assists}</p>
+ </div>
+ </body>
+ </html>
+ `;
+    w.document.write(html);
+    w.document.close();
+    w.print();
+}
+
+// Events (players)
+if (searchInput) searchInput.addEventListener('input', (e) => {
+    state.query = e.target.value;
+    renderGrid();
+});
+
+// Fix for select elements
+const selects = document.querySelectorAll('.select');
+selects.forEach(select => {
+    select.addEventListener('focus', () => {
+        select.classList.add('active-select');
+    });
+    select.addEventListener('blur', () => {
+        select.classList.remove('active-select');
+    });
+});
+
+if (posSelect) posSelect.addEventListener('change', (e) => {
+    state.posFilter = e.target.value;
+    renderGrid();
+});
+if (countrySelect) countrySelect.addEventListener('change', (e) => {
+    state.countryFilter = e.target.value;
+    renderGrid();
+});
+if (proBtn) proBtn.addEventListener('click', () => {
+    state.pro = !state.pro;
+    proBtn.classList.toggle('active', state.pro);
+    renderGrid();
+    const params = new URLSearchParams(window.location.search);
+    const pid = params.get('player');
+    if (pid) openDetail(pid, {
+        pushState: false
+    });
+});
+if (themeBtn) themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    themeBtn.classList.toggle('active');
+    state.theme = state.theme === 'dark' ? 'light' : 'dark';
+});
+if (overlayClose) overlayClose.addEventListener('click', () => {
+    closeOverlay();
+    const url = new URL(window.location.href);
+    url.searchParams.delete('player');
+    history.pushState({}, '', url);
+});
+window.addEventListener('popstate', (e) => {
+    const params = new URLSearchParams(window.location.search);
+    const pid = params.get('player');
+    if (pid) openDetail(pid, {
+        pushState: false
+    });
+    else {
+        closeOverlay();
+    }
+});
+
+function initPlayers() {
+    const params = new URLSearchParams(window.location.search);
+    const pid = params.get('player');
+    if (pid) {
+        document.querySelector(`.nav-link[data-target="playersPage"]`).click();
+        openDetail(pid, {
+            pushState: false
+        });
+    } else {
+        renderGrid();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initPlayers();
+});
+
+window.TOP_GOAL = {
+    PLAYERS,
+    renderGrid,
+    openDetail,
+    exportPlayerJSON,
+    printPlayerCard
+};
+
+
+// Function to show a temporary toast notification
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    // Animate the toast in
+    setTimeout(() => {
+        toast.style.transform = 'translateY(-10px)';
+        toast.style.opacity = '1';
+    }, 10);
+
+    // Animate the toast out and remove it
+    setTimeout(() => {
+        toast.style.transform = 'translateY(-60px)';
+        toast.style.opacity = '0';
+        toast.addEventListener('transitionend', () => {
+            toast.remove();
+        });
+    }, 2500); // Display for 2.5 seconds
+}
+
+
+// ===== Chat toggle - UPDATED to show toast notification =====
+const chatToggleBtn = document.getElementById('chat-toggle-btn');
+const chatModal = document.getElementById('chat-modal');
+const chatCloseBtn = document.getElementById('chat-close-btn');
+
+chatToggleBtn.addEventListener('click', () => {
+    // Show toast notification instead of opening the chat modal
+    showToast('قيد التطوير....🌹');
+});
+
+// This part is now redundant but kept for consistency, as the modal won't open
+chatCloseBtn.addEventListener('click', () => {
+    chatModal.classList.add('hidden');
+});
+
+// This part is also redundant now
+document.addEventListener('click', (e) => {
+    if (!chatModal.contains(e.target) && e.target !== chatToggleBtn) {
+        chatModal.classList.add('hidden');
+    }
+});
+// تحديد العناصر
+const aiLink = document.querySelector('.ai-link');
+const aiPage = document.getElementById('ai-page');
+const aiCloseBtn = document.getElementById('ai-close-btn');
+
+// حدث الضغط على زر AI
+aiLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    aiPage.classList.remove('hidden');
+    // إضافة تأخير بسيط لتفعيل الانتقال
+    setTimeout(() => {
+        aiPage.classList.add('visible');
+    }, 10);
+});
+
+// حدث الضغط على زر الإغلاق
+aiCloseBtn.addEventListener('click', () => {
+    aiPage.classList.remove('visible');
+    // إزالة فئة 'hidden' بعد انتهاء الانتقال
+    setTimeout(() => {
+        aiPage.classList.add('hidden');
+    }, 300); // يجب أن تتطابق المدة مع مدة الانتقال في CSS
+});
+</script>
+</body>
+</html>
